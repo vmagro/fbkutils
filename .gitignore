@@ -4,5 +4,5 @@
 *.s
 !.gitignore
 
-# keep travis
-!.travis.yml
+# keep circleci
+!.circleci
