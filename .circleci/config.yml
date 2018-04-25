@@ -4,20 +4,19 @@ jobs:
     docker:
       - image: circleci/python:3.6
       
-    working_directory: ~/benchpress
-
     steps:
       - checkout
 
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "requirements.txt" }}
+          - v1-benchpress-dependencies-{{ checksum "benchpress/requirements.txt" }}
           # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+          - v1-benchpress-dependencies-
 
       - run:
           name: install dependencies
+          working_directory: benchpress
           command: |
             python3 -m venv venv
             . venv/bin/activate
@@ -25,17 +24,19 @@ jobs:
 
       - save_cache:
           paths:
-            - ./venv
-          key: v1-dependencies-{{ checksum "requirements.txt" }}
+            - ./benchpress/venv
+          key: v1-benchpress-dependencies-{{ checksum "benchpress/requirements.txt" }}
         
       - run:
           name: run tests
+          working_directory: benchpress
           command: |
             . venv/bin/activate
             python setup.py test
 
       - run:
           name: run flake8
+          working_directory: benchpress
           command: |
             . venv/bin/activate
             python setup.py flake8
