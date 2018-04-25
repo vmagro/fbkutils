@@ -73,12 +73,12 @@ class Job(object):
         if isinstance(args, list):
             return args
 
-        l = []
+        arg_list = []
         for key, val in args.items():
-            l.append('--' + key)
+            arg_list.append('--' + key)
             if val is not None:
-                l.append(str(val))
-        return l
+                arg_list.append(str(val))
+        return arg_list
 
     def run(self):
         """Run the benchmark and return the metrics that are reported.

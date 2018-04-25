@@ -39,7 +39,6 @@ jobs:
           working_directory: benchpress
           command: |
             . venv/bin/activate
-            set +e
             python setup.py flake8
 
 workflows:
