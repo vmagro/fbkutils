@@ -9,5 +9,4 @@
 from benchpress.lib.factory import BaseFactory
 from benchpress.lib.reporter import Reporter
 
-
 ReporterFactory = BaseFactory(Reporter)

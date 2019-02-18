@@ -7,8 +7,9 @@
 # of patent rights can be found in the PATENTS file in the same directory.
 import enum
 from abc import ABCMeta, abstractmethod
-from dataclasses import dataclass
 from typing import Dict, List, Optional
+
+from dataclasses import dataclass
 
 
 class TestStatus(enum.IntEnum):

@@ -13,7 +13,6 @@ import subprocess
 
 from benchpress.lib.hook import Hook
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -51,12 +50,12 @@ class ShellHook(Hook):
                     stderr=subprocess.DEVNULL,
                 )
 
-    def before_job(self, opts, job=None):
+    def before(self, opts, job=None):
         self.original_dir = os.getcwd()
         if "before" in opts:
             self.run_commands(opts["before"])
 
-    def after_job(self, opts, job=None):
+    def after(self, opts, job=None):
         if "after" in opts:
             self.run_commands(opts["after"])
 

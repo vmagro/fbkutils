@@ -10,7 +10,6 @@ from benchpress.lib.factory import BaseFactory
 from benchpress.lib.hook import Hook
 from benchpress.plugins.hooks import register_hooks
 
-
 HookFactory = BaseFactory(Hook)
 
 # register third-party hooks with the factory

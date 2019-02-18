@@ -9,8 +9,9 @@
 import unittest
 from unittest.mock import MagicMock
 
-from benchpress.plugins.hooks import FileHook
 from pyfakefs import fake_filesystem, fake_filesystem_unittest
+
+from benchpress.plugins.hooks import FileHook
 
 
 class TestFileHook(fake_filesystem_unittest.TestCase):

@@ -11,9 +11,9 @@ import subprocess
 import unittest
 from unittest.mock import patch
 
-from benchpress.plugins.hooks.shell import ShellHook
 from pyfakefs import fake_filesystem_unittest
 
+from benchpress.plugins.hooks.shell import ShellHook
 
 FAKEDIR = "/tmp_benchpress_test"
 
