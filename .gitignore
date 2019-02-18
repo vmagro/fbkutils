@@ -6,3 +6,5 @@
 
 # keep travis
 !.travis.yml
+
+venv/
