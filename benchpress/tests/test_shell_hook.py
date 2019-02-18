@@ -24,7 +24,7 @@ class TestShellHook(fake_filesystem_unittest.TestCase):
         self.original_dir = os.getcwd()
         self.hook = ShellHook()
 
-        self.fs.CreateDirectory(FAKEDIR)
+        self.fs.create_dir(FAKEDIR)
 
     def tearDown(self):
         os.chdir(self.original_dir)
