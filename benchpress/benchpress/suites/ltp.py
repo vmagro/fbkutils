@@ -10,7 +10,6 @@ import re
 from typing import Any, Dict, Iterable, List, Optional
 
 from benchpress.lib.parser import TestCaseResult, TestStatus
-from benchpress.suites import Suite
 from benchpress.suites.suite import DiscoveredTestCase, Suite
 
 test_format_re = re.compile(r"(\w+)+\s+(\d+)\s+(T(?:FAIL|PASS|BROK|WARN|INFO)).*")
@@ -19,7 +18,7 @@ test_format_re = re.compile(r"(\w+)+\s+(\d+)\s+(T(?:FAIL|PASS|BROK|WARN|INFO)).*
 class LtpSuite(Suite):
     NAME = "ltp"
 
-    def discover_cases() -> List[DiscoveredTestCase]:
+    def discover_cases(self) -> List[DiscoveredTestCase]:
         # TODO
         pass
 
