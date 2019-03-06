@@ -13,6 +13,8 @@ from dataclasses import dataclass
 
 
 class TestStatus(enum.IntEnum):
+    __test__ = False  # keep pytest from picking these up as tests
+
     PASSED = 1
     FAILED = 2
     SKIPPED = 3
@@ -23,6 +25,8 @@ class TestStatus(enum.IntEnum):
 
 @dataclass
 class TestCaseResult(object):
+    __test__ = False  # keep pytest from picking these up as tests
+
     name: str
 
     status: TestStatus
