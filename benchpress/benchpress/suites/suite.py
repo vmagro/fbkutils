@@ -12,7 +12,7 @@ import subprocess
 import sys
 from abc import ABC, ABCMeta, abstractmethod
 from subprocess import TimeoutExpired, CalledProcessError
-from typing import Any, Dict, Iterable, List, Optional
+from typing import Any, Dict, Iterable, List, Optional, Type
 
 from dataclasses import dataclass
 
@@ -30,10 +30,10 @@ class DiscoveredTestCase(object):
 
 class SuiteMeta(type):
 
-    suite_classes = {}
+    suite_classes: Dict[str, Type["Suite"]] = {}
 
     @classmethod
-    def instantiate(cls, config: Dict[str, Any]) -> "SuiteMeta":
+    def instantiate(cls, config: Dict[str, Any]) -> "Suite":
         runner = config.get("runner", "generic")
         if runner not in cls.suite_classes:
             raise RuntimeError(f'No such suite runner "{runner}"')
@@ -75,12 +75,12 @@ class Suite(metaclass=SuiteMeta):
         if isinstance(args, list):
             return args
 
-        l = []
+        lst = []
         for key, val in args.items():
-            l.append("--" + key)
+            lst.append("--" + key)
             if val is not None:
-                l.append(str(val))
-        return l
+                lst.append(str(val))
+        return lst
 
     def run_pre_hooks(self):
         logger.info('Running setup hooks for "{}"'.format(self.name))
@@ -103,7 +103,7 @@ class Suite(metaclass=SuiteMeta):
                 cmd,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
-                check=False,
+                check=self.check_returncode,
                 timeout=self.timeout,
                 encoding="utf-8",
             )
@@ -138,6 +138,12 @@ class Suite(metaclass=SuiteMeta):
     def discover_cases(self) -> List[DiscoveredTestCase]:
         return [DiscoveredTestCase(name="exec", description="does the test exit(0)")]
 
+    @abstractmethod
+    def parse(
+        self, stdout: List[str], stderr: List[str], returncode: Optional[int]
+    ) -> Iterable[TestCaseResult]:
+        pass
+
     def run(
         self, cases: Optional[List[DiscoveredTestCase]] = None
     ) -> Iterable[TestCaseResult]:
@@ -156,5 +162,9 @@ class Suite(metaclass=SuiteMeta):
                     "Job timed out\n" "stdout:\n{}\nstderr:\n{}".format(stdout, stderr)
                 )
                 raise
+            # if timeout was success, parse the output
+            stdout = e.stdout.splitlines()
+            stderr = e.stderr.splitlines()
+            return self.parse(stdout, stderr, None)
         finally:
             self.run_post_hooks()

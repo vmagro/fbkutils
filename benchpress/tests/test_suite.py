@@ -73,7 +73,8 @@ class TestSuite(unittest.TestCase):
         with self.assertRaises(subprocess.CalledProcessError) as e:
             suite.run()
         e = e.exception
-        self.assertEqual("stdout:\n\nstderr:\nerror", e.output.rstrip())
+        self.assertEqual("", e.stdout.strip())
+        self.assertEqual("error", e.stderr.strip())
 
     def test_run_fail_no_check_returncode(self):
         """Bad return code doesn't fail when check_returncode is False"""
@@ -133,7 +134,7 @@ class TestSuite(unittest.TestCase):
 
         suite.run()
 
-        suite.parse.assert_called_with(["wow"], ["err"], 0)
+        suite.parse.assert_called_with(["wow"], ["err"], None)
 
     def test_tee_stdouterr(self):
         """tee_output option works correctly
